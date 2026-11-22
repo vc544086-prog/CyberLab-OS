@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=CyberLab System Monitor
+Comment=Real-Time Hardware and Process Telemetry Dashboard
+Exec=/usr/local/bin/cyberlab-system-monitor
+Icon=utilities-system-monitor
+Terminal=false
+Type=Application
+Categories=System;Monitor;

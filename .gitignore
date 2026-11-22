@@ -1,0 +1,25 @@
+# Build artifacts
+build/
+build_temp/
+target/
+*.o
+*.a
+*.so
+*.iso
+*.squashfs
+
+# Virtual Disks
+*.vdi
+*.vmdk
+*.vhd
+*.nvram
+
+# Python
+__pycache__/
+*.pyc
+
+# IDE & OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

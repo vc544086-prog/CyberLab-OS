@@ -1,0 +1,17 @@
+[package]
+name = "rustos"
+version = "0.1.0"
+edition = "2021"
+authors = ["Vishnu C <vishnu@cyberlab.os>"]
+description = "CyberLab OS - 32-bit Freestanding Bare-Metal Rust Kernel"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+lto = true
+opt-level = 3
+
+[dependencies]
+# Freestanding kernel with zero external dependencies

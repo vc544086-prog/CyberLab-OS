@@ -1,0 +1,8 @@
+[build]
+target = "i686-rustos.json"
+
+[target.i686-rustos]
+rustflags = [
+    "-C", "link-arg=-Tlinker.ld",
+    "-C", "relocation-model=static",
+]

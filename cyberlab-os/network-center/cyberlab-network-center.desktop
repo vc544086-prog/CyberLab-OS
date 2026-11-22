@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=CyberLab Network Center
+Comment=Next-Gen Wireless and Hardware Network Manager
+Exec=/usr/local/bin/cyberlab-network-center
+Icon=network-wireless
+Terminal=false
+Type=Application
+Categories=Settings;HardwareSettings;Network;
+Keywords=network;wifi;ethernet;internet;virtualbox;

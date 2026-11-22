@@ -1,0 +1,5 @@
+Switch Cost,Useful Throughput (mean),Throughput CI,Jain Fairness (mean),Jain CI,Min Share % (mean),Min Share CI,Context Switches (mean),Switches CI
+0.0,1.0000,0.0000,0.9356,0.0021,6.84,0.13,2938.1,10.2
+0.1,0.9715,0.0001,0.9355,0.0022,6.85,0.13,2853.8,10.3
+0.2,0.9445,0.0002,0.9355,0.0023,6.84,0.13,2774.2,9.8
+0.5,0.8720,0.0005,0.9360,0.0023,6.87,0.15,2559.6,9.3

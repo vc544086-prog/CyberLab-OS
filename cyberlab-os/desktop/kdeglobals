@@ -1,0 +1,17 @@
+[Colors:View]
+BackgroundNormal=#0d0e15
+ForegroundNormal=#e1e3ea
+DecorationFocus=#00f0ff
+DecorationHover=#7928ca
+
+[Colors:Window]
+BackgroundNormal=#12131c
+ForegroundNormal=#e1e3ea
+
+[General]
+ColorScheme=CyberLabDark
+Name=CyberLab Dark
+shadeSortColumn=true
+
+[Icons]
+Theme=breeze-dark

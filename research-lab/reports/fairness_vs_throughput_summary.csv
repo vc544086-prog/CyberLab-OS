@@ -1,0 +1,4 @@
+Policy,Useful Throughput (mean),Throughput 95% CI,Jain Fairness (mean),Jain 95% CI,Min CPU Share % (mean),Min Share 95% CI,Context Switches (mean),Switches 95% CI
+FCFS,0.9798,0.0002,0.6222,0.0071,2.5781,0.0703,1008.2,10.4
+SJF,0.9996,0.0000,0.1799,0.0135,0.0135,0.0090,21.0,1.6
+RR,0.9446,0.0001,0.9340,0.0010,6.7001,0.0873,2770.0,6.4

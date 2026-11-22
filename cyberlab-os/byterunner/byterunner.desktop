@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=ByteRunner
+Comment=CyberLab OS Retro Arcade Runner
+Exec=/usr/local/bin/byterunner
+Icon=applications-games
+Terminal=false
+Type=Application
+Categories=Game;ArcadeGame;
