@@ -1,0 +1,5 @@
+#!/bin/sh
+/usr/bin/wifi
+echo ""
+echo "Interactive shell ready. Type 'wifi', 'ping 8.8.8.8', or any Linux command."
+exec /bin/sh

@@ -1,0 +1,2 @@
+#!/bin/sh
+exec sakura -t "CyberLab Wi-Fi Center" -x /usr/bin/wifi-center-run

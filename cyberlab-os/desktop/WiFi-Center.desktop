@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=Wi-Fi Center
+Comment=Scan & View Wi-Fi Networks
+Exec=/usr/bin/wifi-center
+Icon=network-wireless
+Terminal=false
+Type=Application
+Categories=System;Network;
