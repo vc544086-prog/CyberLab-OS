@@ -1,12 +1,13 @@
 #!/bin/bash
 set -e
-echo "[*] Preparing files in orig_r1..."
+echo "[*] Preparing files in orig_r1 for CyberLab OS..."
 
 rm -rf /root/orig_r1/home
 
 mkdir -p /root/orig_r1/etc/skel/Desktop
 mkdir -p /root/orig_r1/etc/xdg/autostart
 mkdir -p /root/orig_r1/usr/bin /root/orig_r1/bin /root/orig_r1/usr/local/bin /root/orig_r1/usr/share/applications
+mkdir -p /root/orig_r1/etc/init.d
 
 # 1. Desktop launchers
 cat << 'INNER_EOF' > /root/orig_r1/etc/skel/Desktop/Terminal.desktop
@@ -67,7 +68,7 @@ cat << 'INNER_EOF' > /root/orig_r1/usr/bin/wifi-center-run
 #!/bin/sh
 /usr/bin/wifi
 echo ""
-echo "Interactive shell ready. Type 'wifi', 'ping 8.8.8.8', or any Linux command."
+echo "Interactive shell ready. Type 'wifi', 'ping 8.8.8.8', 'ping google.com' or any command."
 exec /bin/sh
 INNER_EOF
 chmod 755 /root/orig_r1/usr/bin/wifi-center-run
@@ -84,99 +85,61 @@ cp -p /root/orig_r1/usr/bin/wifi-center /root/orig_r1/usr/local/bin/wifi-center
 cp -p /root/orig_r1/usr/bin/wifi-center-run /root/orig_r1/bin/wifi-center-run
 cp -p /root/orig_r1/usr/bin/wifi-center-run /root/orig_r1/usr/local/bin/wifi-center-run
 
-# 4. Real-time Wifi CLI utility
-cat << 'INNER_EOF' > /root/orig_r1/usr/bin/wifi
-#!/bin/sh
-# CyberLab OS :: Wi-Fi Control & Diagnostics Suite
-# Student: Vishnu C (25BTRCL282) - JAIN University
-
-CYAN='\033[1;36m'
-GREEN='\033[1;32m'
-PURPLE='\033[1;35m'
-YELLOW='\033[1;33m'
-WHITE='\033[1;37m'
-RESET='\033[0m'
-BOLD='\033[1m'
-
-show_banner() {
-    echo -e "${PURPLE}======================================================================${RESET}"
-    echo -e "${CYAN}   CYBERLAB OS :: WIRELESS HARDWARE & NETWORK MANAGER                 ${RESET}"
-    echo -e "${PURPLE}======================================================================${RESET}"
-}
-
-cmd_status() {
-    show_banner
-    echo -e "${BOLD}HARDWARE ADAPTER:${RESET}  Realtek 8852BE Wireless LAN WiFi 6 PCI-E NIC"
-    echo -e "${BOLD}BRIDGED INTERFACE:${RESET} eth0 (VirtualBox Bridged Network Mode)"
-    echo -e "${BOLD}ASSIGNED IP:${RESET}       $(ifconfig eth0 2>/dev/null | grep 'inet ' | awk '{print $2}' | sed 's/addr://')"
-    echo -e "${BOLD}GATEWAY ROUTER:${RESET}    $(route -n 2>/dev/null | awk '/^0.0.0.0/ {print $2}') (Vishnu’s iPhone)"
-    echo -e ""
-    echo -e "${BOLD}CURRENTLY CONNECTED DEVICE:${RESET}"
-    echo -e "  - ${WHITE}Device SSID:${RESET}   ${GREEN}Vishnu’s iPhone  [CONNECTED / ACTIVE]${RESET}"
-    echo -e "  - ${WHITE}Device BSSID:${RESET}  5e:b5:ea:28:f1:f2"
-    echo -e "  - ${WHITE}Signal Level:${RESET}  ${GREEN}100% (-45 dBm) [Excellent Link Quality]${RESET}"
-    echo -e "  - ${WHITE}Radio / Band:${RESET}  802.11ax (Wi-Fi 6) / 5 GHz Band (Channel 149)"
-    echo -e "  - ${WHITE}Security:${RESET}      WPA3-Personal (H2E / CCMP Authenticated)"
-    echo -e "  - ${WHITE}Tx / Rx Rate:${RESET}  1201.0 Mbps / 1201.0 Mbps"
-    echo ""
-}
-
-cmd_scan() {
-    show_banner
-    echo -e "${YELLOW}[*] Scanning 2.4 GHz and 5 GHz wireless spectrum across Realtek NIC...${RESET}\n"
-    echo -e "${BOLD}SSID                     SIGNAL   BAND    CHANNEL  SECURITY          CONNECTION STATUS${RESET}"
-    echo -e "--------------------------------------------------------------------------------------"
-    echo -e "${GREEN}Vishnu’s iPhone          100%     5 GHz   149      WPA3-Personal     CONNECTED (Active Device)${RESET}"
-    echo -e "Mouni’s iPhone           88%      5 GHz   36       WPA3-Personal     Available in range"
-    echo -e "Jain_Student             75%      5 GHz   48       WPA2-Enterprise   Available in range"
-    echo -e "Jaswanth                 70%      2.4 GHz 6        WPA2-Personal     Available in range"
-    echo -e "Airtel_Vishnu.c          60%      5 GHz   44       WPA2-Personal     Saved Profile / Known"
-    echo -e "ASUS_8_2G_5G             45%      2.4 GHz 1        WPA2-Personal     Available in range"
-    echo -e "--------------------------------------------------------------------------------------"
-    echo -e "${CYAN}Real-time Device Summary:${RESET}"
-    echo -e "  ${GREEN}● Connected Host Device : Vishnu’s iPhone (5e:b5:ea:28:f1:f2)${RESET}"
-    echo -e "  ${WHITE}● Total Available Devices: 6 Wi-Fi access points detected${RESET}"
-    echo -e "  ${WHITE}● Bridged Internet Mode  : ONLINE (Packets routing via Vishnu’s iPhone)${RESET}\n"
-}
-
-cmd_ping() {
-    show_banner
-    echo -e "${CYAN}[*] Testing ICMP Internet Transit via Vishnu’s iPhone (8.8.8.8)...${RESET}"
-    ping -c 4 8.8.8.8
-}
-
-case "$1" in
-    scan|list)
-        cmd_scan
-        ;;
-    status)
-        cmd_status
-        ;;
-    ping|test)
-        cmd_ping
-        ;;
-    connect)
-        echo -e "${CYAN}[*] Connecting to $2...${RESET}"
-        echo -e "${GREEN}[+] Successfully connected to $2 via Bridged Realtek Wi-Fi!${RESET}"
-        ;;
-    help|--help|-h)
-        show_banner
-        echo "Usage: wifi [command]"
-        echo "  wifi             - Show active connected device & scan all available devices"
-        echo "  wifi status      - Show connected device details (SSID, BSSID, Signal, Band)"
-        echo "  wifi scan        - Scan currently available devices in range"
-        echo "  wifi ping        - Test live ICMP transit via connected device"
-        ;;
-    *)
-        cmd_status
-        cmd_scan
-        ;;
-esac
-INNER_EOF
-
+# 4. Copy updated Wi-Fi CLI utility
+cp -p "/mnt/c/Users/Vishnu C/.gemini/antigravity/scratch/Dual-OS-CyberLab/cyberlab-os/scripts/wifi" /root/orig_r1/usr/bin/wifi
 chmod 755 /root/orig_r1/usr/bin/wifi
 cp -p /root/orig_r1/usr/bin/wifi /root/orig_r1/bin/wifi
 cp -p /root/orig_r1/usr/bin/wifi /root/orig_r1/usr/local/bin/wifi
+
+# 5. Copy Universal Smart Ping utility (handles ICMP + NAT packet transit)
+cp -p "/mnt/c/Users/Vishnu C/.gemini/antigravity/scratch/Dual-OS-CyberLab/cyberlab-os/scripts/ping-smart.sh" /root/orig_r1/bin/ping
+chmod 755 /root/orig_r1/bin/ping
+cp -p /root/orig_r1/bin/ping /root/orig_r1/usr/bin/ping
+cp -p /root/orig_r1/bin/ping /root/orig_r1/usr/local/bin/ping
+
+# 6. Pre-configure resilient DNS in /etc/resolv.conf
+cat << 'INNER_EOF' > /root/orig_r1/etc/resolv.conf
+nameserver 8.8.8.8
+nameserver 1.1.1.1
+nameserver 10.0.2.3
+INNER_EOF
+chmod 644 /root/orig_r1/etc/resolv.conf
+
+# 7. Pre-configure kernel sysctl permissions for ICMP
+cat << 'INNER_EOF' > /root/orig_r1/etc/sysctl.conf
+net.ipv4.ping_group_range = 0 2147483647
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+INNER_EOF
+chmod 644 /root/orig_r1/etc/sysctl.conf
+
+# 8. Add network & DNS initialization to local.sh startup
+cat << 'INNER_EOF' > /root/orig_r1/etc/init.d/local.sh
+#!/bin/sh
+# CyberLab OS :: Network & System Init
+[ -d /sys/firmware/efi/efivars ] && mount -t efivarfs none /sys/firmware/efi/efivars 2>/dev/null
+
+ifconfig eth0 up 2>/dev/null
+if ! ifconfig eth0 2>/dev/null | grep -q 'inet '; then
+    udhcpc -i eth0 -n -q -t 4 2>/dev/null
+fi
+if ! ifconfig eth0 2>/dev/null | grep -q 'inet '; then
+    ifconfig eth0 10.0.2.15 netmask 255.255.255.0 up 2>/dev/null
+    route add default gw 10.0.2.2 dev eth0 2>/dev/null
+fi
+if ! route -n 2>/dev/null | grep -q '^0.0.0.0'; then
+    route add default gw 10.0.2.2 dev eth0 2>/dev/null
+fi
+if [ ! -s /etc/resolv.conf ]; then
+    echo "nameserver 8.8.8.8" > /etc/resolv.conf
+    echo "nameserver 1.1.1.1" >> /etc/resolv.conf
+    echo "nameserver 10.0.2.3" >> /etc/resolv.conf
+fi
+sysctl -w net.ipv4.ping_group_range="0 2147483647" 2>/dev/null
+chmod 4755 /bin/busybox 2>/dev/null
+chmod 755 /bin/ping /usr/bin/ping 2>/dev/null
+INNER_EOF
+chmod 755 /root/orig_r1/etc/init.d/local.sh
+
 ln -sf /usr/bin/sakura /root/orig_r1/usr/bin/terminal
 
 if [ -f /root/iso_work/r1/usr/local/bin/cyberlab-research ]; then

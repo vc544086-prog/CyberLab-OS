@@ -1,6 +1,7 @@
 # ================================================================================
 # CYBERLAB OS :: VIRTUALBOX & HYPERVISOR LAUNCHER (POWERSHELL EDITION)
 # Author: Vishnu C (25BTRCL282) - JAIN University
+# Course: 25PCCS201 - Operating Systems
 # ================================================================================
 
 Write-Host "`n================================================================================" -ForegroundColor Cyan
@@ -33,20 +34,19 @@ $IsoPath = "$ScriptDir\cyberlab-os\build\cyberlab-os.iso"
 Write-Host "[+] Target ISO ready: $IsoPath" -ForegroundColor Green
 
 $VMName = "CyberLab-OS-Workstation"
-$HostWifiAdapter = "Realtek 8852BE Wireless LAN WiFi 6 PCI-E NIC"
 
 # 3. Synchronize Host Wi-Fi telemetry before boot
 Write-Host "[*] Synchronizing Host Realtek Wi-Fi telemetry..." -ForegroundColor Cyan
 & powershell -ExecutionPolicy Bypass -File "$ScriptDir\cyberlab-os\scripts\sync-host-wifi.ps1"
 
-# 4. Configure Bridged Wi-Fi networking (enables native ICMP ping & internet access)
-Write-Host "[*] Ensuring Bridged Wi-Fi adapter is mapped to '$HostWifiAdapter'..." -ForegroundColor Cyan
-& $VBoxCmd modifyvm "$VMName" --nic1 bridged --bridgeadapter1 "$HostWifiAdapter" --nictype1 82540EM 2>$null
+# 4. Configure Universal NAT Networking with Host DNS Resolver (guarantees ping & web transit)
+Write-Host "[*] Configuring Universal NAT Networking with Host DNS Resolver..." -ForegroundColor Cyan
+& $VBoxCmd modifyvm "$VMName" --nic1 nat --nictype1 82540EM --natdnshostresolver1 on --natdnsproxy1 on 2>$null
 & $VBoxCmd modifyvm "$VMName" --graphicscontroller vboxsvga --vram 128 --memory 4096 2>$null
 
 Write-Host "`n[+] Launching CyberLab OS on screen via VirtualBox GUI..." -ForegroundColor Green
 Start-Process $VBoxGui -ArgumentList "--startvm `"$VMName`""
 
 Write-Host "`n================================================================================" -ForegroundColor Cyan
-Write-Host " Virtual Machine launched on your screen! (Bridged to $HostWifiAdapter)" -ForegroundColor Green
+Write-Host " Virtual Machine launched on your screen! (Universal NAT + DNS transit active)" -ForegroundColor Green
 Write-Host "================================================================================" -ForegroundColor Cyan
