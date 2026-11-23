@@ -7,6 +7,8 @@
 ![Course](https://img.shields.io/badge/Course-25PCCS201%20Operating%20Systems-purple?style=for-the-badge)
 ![Institution](https://img.shields.io/badge/Institution-JAIN%20(Deemed--to--be%20University)-red?style=for-the-badge)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Download%20ISO-yellow?style=for-the-badge)](https://huggingface.co/vishnu-11/CyberLab-OS-ISO)
+
 
 **Student**: Vishnu C  
 **USN**: 25BTRCL282  
